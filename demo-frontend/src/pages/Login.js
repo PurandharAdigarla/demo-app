@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../style.css"; 
 
 const Login = () => {
   const navigate = useNavigate();
-
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
-  });
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -18,20 +15,17 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8080/authentication/login", {
-        email: credentials.email,
-        password: credentials.password,
-      });
-
-      alert("Login successful! Redirecting...");
+      const response = await axios.post("http://localhost:8080/authentication/login", credentials);
+      localStorage.setItem("token", response.data.token);
+      alert("Login Successful! Redirecting to home...");
       navigate("/home");
     } catch (error) {
-      alert("Login failed: " + (error.response?.data || error.message));
+      alert("Login Failed: " + (error.response?.data || error.message));
     }
   };
 
   return (
-    <div>
+    <div className="form-container">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <input type="email" name="email" placeholder="Email" value={credentials.email} onChange={handleChange} required />

@@ -24,7 +24,7 @@ const Login = () => {
       });
 
       alert("Login successful! Redirecting...");
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       alert("Login failed: " + (error.response?.data || error.message));
     }
